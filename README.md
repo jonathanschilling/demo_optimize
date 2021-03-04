@@ -46,5 +46,5 @@ and a new run folder is created, the temporary input file is moved into it and t
 The second part of the python wrapper script uses above infrastructure
 to run your code over and over again until some objective function is optimized.
 This is a simple mock-up example of much more powerful optimization frameworks,
-such as e.g. [`SIMSOPT`](https://github.com/hiddenSymmetries/simsopt).
+such as e.g. [`SIMSOPT`](https://hiddensymmetries.github.io/simsopt/).
 

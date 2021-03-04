@@ -25,6 +25,7 @@ Execute the code as follows:
 ```
 
 The output of the code can be plotted using e.g. `gnuplot`:
+
 ![plot of output data](output.png "plot of output data")
 
 ## Python wrapper

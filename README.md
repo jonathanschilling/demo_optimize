@@ -12,6 +12,14 @@ It can be compiled with `gcc` using the following command:
 gcc main_objective.c -o main_objective.c -lm
 ```
 
+This particular example computes a Gaussian bell shape for given `mean`, `sigma` and `amplitude`
+at 100 points between `mean-3*sigma` and `mean+3*sigma`.
+An example input file is [`input.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/input.txt).
+It contains three lines for `mean=10.0`, `sigma=2.4` and `amplitude=0.1`.
+The outputs are written to a file called [`output.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/output.txt)
+in the folder where the code is called from:
+![plot of output data](output.png "plot of output data")
+
 ## Python wrapper
 A Python wrapper that can organize execution of this code is found in the first part of [`demo_minimize.py`](https://github.com/jonathanschilling/demo_optimize/blob/master/demo_minimize.py).
 

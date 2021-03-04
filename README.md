@@ -17,7 +17,14 @@ at 100 points between `mean-3*sigma` and `mean+3*sigma`.
 An example input file is [`input.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/input.txt).
 It contains three lines for `mean=10.0`, `sigma=2.4` and `amplitude=0.1`.
 The outputs are written to a file called [`output.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/output.txt)
-in the folder where the code is called from:
+in the folder where the code is called from.
+
+Execute the code as follows:
+```bash
+./main_objective input.txt
+```
+
+The output of the code can be plotted using e.g. `gnuplot`:
 ![plot of output data](output.png "plot of output data")
 
 ## Python wrapper

@@ -109,8 +109,9 @@ int main(int argc, char** argv) {
     double result[N];
 
     // the main computation of this "code"
+    double delta_x = (max_x-min_x)/N;
     for (int i=0; i<N; i++) {
-        x[i] = min_x+i*(max_x-min_x)/N;
+        x[i]      = min_x+i*delta_x;
         result[i] = gaussian(mean, sigma, amplitude, x[i]);
     }
 

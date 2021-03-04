@@ -13,7 +13,7 @@ gcc main_objective.c -o main_objective.c -lm
 ```
 
 This particular example computes a Gaussian bell shape for given `mean`, `sigma` and `amplitude`
-at 100 points between `mean-3*sigma` and `mean+3*sigma`.
+at 100 points between -10 and 10.
 An example input file is [`input.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/input.txt).
 It contains three lines for `mean=1.0`, `sigma=2.4` and `amplitude=0.1`.
 The outputs are written to a file called [`output.txt`](https://github.com/jonathanschilling/demo_optimize/blob/master/output.txt)

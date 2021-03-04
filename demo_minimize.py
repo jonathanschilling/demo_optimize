@@ -34,6 +34,7 @@ if not os.path.exists(working_dir):
     os.mkdir(working_dir)
 print("working directory: "+working_dir)
 
+
 # write the input file with given parameters
 def write_input(input_filename, parameters):
     # check that correct number of parameters is given
@@ -48,12 +49,16 @@ def write_input(input_filename, parameters):
         
     # actually write input file
     with open(input_filename, "w") as input_file:
-        input_file.write("%g\n"%(mean,))
-        input_file.write("%g\n"%(sigma,))
-        input_file.write("%g\n"%(amplitude,))
+        input_file.write("%.25e\n"%(mean,))
+        input_file.write("%.25e\n"%(sigma,))
+        input_file.write("%.25e\n"%(amplitude,))
 
 # read output file and return results found in it
 def read_output(output_filename):
+    # check if output file exists (== code was successful)
+    if not os.path.exists(output_filename):
+        return None
+    
     # read all lines of the output file
     lines = []
     with open(output_filename, "r") as output_file:
@@ -72,7 +77,7 @@ def read_output(output_filename):
 
 # call code to compute something and return results from output file
 def call_code(parameters):
-    
+
     # write temporary input file 
     temp_input_filename = working_dir+default_input_filename
     write_input(temp_input_filename, parameters)
@@ -109,7 +114,7 @@ def call_code(parameters):
             # run was not successful, print an error message
             print("Error: run %s failed"%(runId,))
             return None
-        
+
         # change back to previous working directory
         os.chdir(old_cwd)
     else:
@@ -125,8 +130,9 @@ def call_code(parameters):
 
 ######### SciPy optimizer operating on runs of above wrapped code #########
 
-
 import numpy as np
+import matplotlib.pyplot as plt
+
 from scipy.optimize import minimize
 
 
@@ -135,49 +141,71 @@ from scipy.optimize import minimize
 
 
 
-
-def objective(x):
-    return x[0]*x[3]*(x[0]+x[1]+x[2])+x[2]
-
-def constraint1(x):
-    return x[0]*x[1]*x[2]*x[3]-25.0
-
-def constraint2(x):
-    sum_eq = 40.0
-    for i in range(4):
-        sum_eq = sum_eq - x[i]**2
-    return sum_eq
-
-
 if __name__=='__main__':
+    
+    # target parameters
+    target_mean = 5.0
+    target_sigma = 1.0
+    target_ampl = 0.1
+    target_parameters = [target_mean, target_sigma, target_ampl]
+    
+    # evaluation points; has to match code in main_objective.c here
+    N = 100
+    min_x = -10.0
+    max_x =  10.0
+    x = np.arange(min_x, max_x, (max_x-min_x)/N)
+    
+    # evaluate objective function at target parameters
+    _, target_result = call_code(target_parameters)
+    
+    # define boundaries for input parameters
+    bounds = [(-np.Inf, np.Inf), (0.0, np.Inf), (0.0, np.Inf)]
         
-    # initial guesses
-    n = 4
-    x0 = np.zeros(n)
-    x0[0] = 1.0
-    x0[1] = 5.0
-    x0[2] = 5.0
-    x0[3] = 1.0
+
     
-    # show initial objective
-    print('Initial SSE Objective: ' + str(objective(x0)))
+    # chi-squared error objective
+    # - evaluate your code with parameters given in x
+    # - compare results of the code with target_result
+    def objective(x):
+        print("eval at "+str(x))
+        eval_result = call_code(x)
+        if eval_result is not None:
+            return np.sum((np.subtract(target_result, eval_result))**2)
+        else:
+            return np.Infinity
+
     
-    # optimize
-    b = (1.0,5.0)
-    bnds = (b, b, b, b)
-    con1 = {'type': 'ineq', 'fun': constraint1} 
-    con2 = {'type': 'eq', 'fun': constraint2}
-    cons = ([con1,con2])
-    solution = minimize(objective,x0,method='SLSQP',\
-                        bounds=bnds,constraints=cons)
-    x = solution.x
+    # debug plot of target result
+    plt.figure()
+    plt.plot(x, target_result, label='target')
     
-    # show final objective
-    print('Final SSE Objective: ' + str(objective(x)))
     
-    # print solution
-    print('Solution')
-    print('x1 = ' + str(x[0]))
-    print('x2 = ' + str(x[1]))
-    print('x3 = ' + str(x[2]))
-    print('x4 = ' + str(x[3]))
+    ### in a real-world example you probably will have the target
+    ### from somewhere else that the code to produce them itself...
+    
+    # number of free parameters
+    n = 3
+    
+    # initial guess for parameters; only has to give a valid result
+    x0 = [2.5, 1.0, 0.2]
+
+    # plot initial guess 
+    _, initial_result = call_code(x0)
+    plt.plot(x, initial_result, 'k--', label='initial')
+    
+    print("objective function at initial parameters: %g"%(objective(x0)))
+    
+    # call optimizer
+    solution = minimize(objective, x0, method='SLSQP', bounds = bounds)
+    #solution = minimize(objective, x0, method='L-BFGS-B', bounds = bounds)
+    final_parameters = solution.x
+    
+    # plot final result 
+    _, final_result = call_code(final_parameters)
+    plt.plot(x, final_result, 'r.', label='final')
+    
+    print("objective function at final parameters: %g"%(objective(final_parameters)))
+    
+    plt.legend()
+    plt.grid(True)
+    

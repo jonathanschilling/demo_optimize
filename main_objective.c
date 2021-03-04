@@ -97,9 +97,9 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    // output is from (mean-3*sigma) to (mean+3*sigma)
-    double min_x = mean-3*sigma;
-    double max_x = mean+3*sigma;
+    // output is from -10 to +10
+    double min_x = -10.0;
+    double max_x =  10.0;
 
     printf("=> x span from %g to %g\n", min_x, max_x);
 
@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
     // write the result to an output file
     fp = fopen("output.txt", "w");
     for (int i=0; i<N; i++) {
-        fprintf(fp, "%g %g\n", x[i], result[i]);
+        fprintf(fp, "%g %.25f\n", x[i], result[i]);
     }
     fclose(fp);
 

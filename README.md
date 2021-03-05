@@ -50,3 +50,5 @@ to run your code over and over again until some objective function is optimized.
 This is a simple mock-up example of much more powerful optimization frameworks,
 such as e.g. [`SIMSOPT`](https://hiddensymmetries.github.io/simsopt/).
 
+For detailes information about the `scipy.optimize.minimize()` function,
+see the corresponding [reference documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html).

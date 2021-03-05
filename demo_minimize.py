@@ -125,21 +125,12 @@ def call_code(parameters):
         
 
 
-
-
-
 ######### SciPy optimizer operating on runs of above wrapped code #########
 
 import numpy as np
 import matplotlib.pyplot as plt
 
 from scipy.optimize import minimize
-
-
-    
-    
-
-
 
 if __name__=='__main__':
     
@@ -160,8 +151,6 @@ if __name__=='__main__':
     
     # define boundaries for input parameters
     bounds = [(-np.Inf, np.Inf), (0.0, np.Inf), (0.0, np.Inf)]
-        
-
     
     # chi-squared error objective
     # - evaluate your code with parameters given in x
@@ -174,11 +163,9 @@ if __name__=='__main__':
         else:
             return np.Infinity
 
-    
     # debug plot of target result
     plt.figure()
     plt.plot(x, target_result, label='target')
-    
     
     ### in a real-world example you probably will have the target
     ### from somewhere else that the code to produce them itself...

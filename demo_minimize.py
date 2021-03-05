@@ -146,7 +146,7 @@ if __name__=='__main__':
     _, target_result = call_code(target_parameters)
     
     # define boundaries for input parameters
-    bounds = [(-np.Inf, np.Inf), (0.0, np.Inf), (0.0, np.Inf)]
+    bounds = [(-np.Inf, np.Inf), (0.01, np.Inf), (0.01, np.Inf)]
     
     # chi-squared error objective
     # - evaluate your code with parameters given in x

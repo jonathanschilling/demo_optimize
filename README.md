@@ -9,7 +9,7 @@ and (if successful) generate (some) output file(s).
 This repository contains an example of such a code in [`main_objective.c`](https://github.com/jonathanschilling/demo_optimize/blob/master/main_objective.c).
 It can be compiled with `gcc` using the following command:
 ```bash
-gcc main_objective.c -o main_objective.c -lm
+gcc main_objective.c -o main_objective -lm
 ```
 
 This particular example computes a Gaussian bell shape for given `mean`, `sigma` and `amplitude`

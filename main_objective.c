@@ -13,7 +13,7 @@
  * that need to be supervised by external (e.g. Python) scripts.
  *
  * Build this with
- * gcc main_objective.c -o main_objective -lm
+ * gcc main_objective.c -lm -o main_objective
  *
  * Jonathan Schilling (jonathan.schilling@mail.de)
  */

@@ -14,10 +14,10 @@ import subprocess
 
 # absolute path to executable
 # in this demo, this needs to be compiled from main_objective.c
-path_to_code = "/data/jonathan/work/code/demo_minimize/main_objective"
+path_to_code = os.path.join(os.getcwd(), 'main_objective')
 
 # absolute path to directory where runs of the code are to be stored
-working_dir = "/data/jonathan/work/code/demo_minimize/runs/"
+working_dir = os.path.join(os.getcwd(), 'runs')
 
 # default name of input file
 default_input_filename = "input.txt"
@@ -25,13 +25,9 @@ default_input_filename = "input.txt"
 # default name of output file
 default_output_filename = "output.txt"
 
-# make sure that working directory can be used as a path
-if not working_dir.endswith("/"):
-    working_dir += "/"
-
 # create working directory (if not exists already)
-if not os.path.exists(working_dir):
-    os.mkdir(working_dir)
+if not os.path.isdir(working_dir):
+    os.makedirs(working_dir)
 print("working directory: "+working_dir)
 
 
@@ -56,7 +52,7 @@ def write_input(input_filename, parameters):
 # read output file and return results found in it
 def read_output(output_filename):
     # check if output file exists (== code was successful)
-    if not os.path.exists(output_filename):
+    if not os.path.isfile(output_filename):
         return None
     
     # read all lines of the output file
@@ -79,7 +75,7 @@ def read_output(output_filename):
 def call_code(parameters):
 
     # write temporary input file 
-    temp_input_filename = working_dir+default_input_filename
+    temp_input_filename = os.path.join(working_dir, default_input_filename)
     write_input(temp_input_filename, parameters)
     
     # generate md5sum of input file
@@ -91,16 +87,16 @@ def call_code(parameters):
     print("run id: "+runId)
     
     # path to a folder dedicated to this run
-    run_folder = working_dir+runId+"/"
+    run_folder = os.path.join(working_dir, runId)
     
     # check if run folder already exists and read output if available
-    if not os.path.exists(run_folder):
+    if not os.path.isdir(run_folder):
         
         # create a folder dedicated to this run
-        os.mkdir(run_folder)
+        os.makedirs(run_folder)
         
         # move temporary input file into run folder (=rename it)
-        os.rename(temp_input_filename, run_folder+default_input_filename)
+        os.rename(temp_input_filename, os.path.join(run_folder, default_input_filename))
         
         # remember current working directory so we can return to it later
         old_cwd = os.getcwd()
@@ -121,7 +117,7 @@ def call_code(parameters):
         print("  run already exists, skipping execution :-)")
         
     # run was already performed or successful now, so can read output file
-    return read_output(run_folder+default_output_filename)
+    return read_output(os.path.join(run_folder, default_output_filename))
         
 
 

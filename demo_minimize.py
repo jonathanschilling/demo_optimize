@@ -179,16 +179,17 @@ if __name__=='__main__':
     print("objective function at initial parameters: %g"%(objective(x0)))
     
     # call optimizer
-    solution = minimize(objective, x0, method='SLSQP', bounds = bounds)
+    solution = minimize(objective, x0, method='SLSQP', bounds = bounds, options={'ftol':1e-12})
     #solution = minimize(objective, x0, method='L-BFGS-B', bounds = bounds)
+
     final_parameters = solution.x
     
     # plot final result 
     _, final_result = call_code(final_parameters)
     plt.plot(x, final_result, 'r.', label='final')
-    
-    print("objective function at final parameters: %g"%(objective(final_parameters)))
-    
     plt.legend()
     plt.grid(True)
-    
+
+    print("")
+    print("objective function at final parameters: "+str(solution.fun))
+    print("number of function evaluations for optimization: "+str(solution.nfev))

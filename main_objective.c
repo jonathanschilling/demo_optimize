@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
+#include <math.h>   // for exp()
+#include <unistd.h> // for sleep()
 
 // make sure that NaN is defined
 #ifndef NAN
@@ -114,6 +115,9 @@ int main(int argc, char** argv) {
         x[i]      = min_x+i*delta_x;
         result[i] = gaussian(mean, sigma, amplitude, x[i]);
     }
+
+    // this is heavy workload, so it takes some time....
+    //sleep(1);
 
     // write the result to an output file
     fp = fopen("output.txt", "w");

@@ -42,7 +42,7 @@ def write_input(input_filename, parameters):
     mean      = parameters[0]
     sigma     = parameters[1]
     amplitude = parameters[2]
-        
+    
     # actually write input file
     with open(input_filename, "w") as input_file:
         input_file.write("%.25e\n"%(mean,))
@@ -106,19 +106,24 @@ def call_code(parameters):
                                 capture_output=True, cwd=run_folder)
         print(output.stdout.decode())
         print(output.stderr.decode())
+        
+        success = True
         if output.returncode != 0:
             # run was not successful, print an error message
             print("Error: run %s failed"%(runId,))
-            return None
-
+            success = False
+            
         # change back to previous working directory
         os.chdir(old_cwd)
+        
+        if not success:
+            return None
     else:
         print("  run already exists, skipping execution :-)")
         
     # run was already performed or successful now, so can read output file
     return read_output(os.path.join(run_folder, default_output_filename))
-        
+
 
 
 ######### SciPy optimizer operating on runs of above wrapped code #########
@@ -165,9 +170,6 @@ if __name__=='__main__':
     
     ### in a real-world example you probably will have the target
     ### from somewhere else that the code to produce them itself...
-    
-    # number of free parameters
-    n = 3
     
     # initial guess for parameters; only has to give a valid result
     x0 = [2.5, 1.0, 0.2]
